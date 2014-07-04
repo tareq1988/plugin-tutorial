@@ -59,19 +59,12 @@ function wetuts_seo_tags() {
 
 add_action( 'wp_head', 'wetuts_seo_tags' );
 
-
-function wetuts_wp_footer() {
+function wptuts_wp_footer() {
     echo '<h1>Hello Sunshine</h1>';
 }
 
-// add_action( 'wp_footer', 'wetuts_wp_footer' );
+// add_action( 'wp_footer', 'wptuts_wp_footer', 99999 );
 
-/**
- * Show the author bio after post content
- *
- * @param  string $content
- * @return string
- */
 function wetuts_author_bio( $content ) {
     global $post;
 
@@ -118,15 +111,33 @@ function wetuts_author_bio( $content ) {
     return $content . $bio_content;
 }
 
-add_action( 'the_content', 'wetuts_author_bio', 99 );
+add_filter( 'the_content', 'wetuts_author_bio' );
 
-/**
- * Enequeue our scripts and styles
- *
- * @return void
- */
 function wetuts_enqueue_scripts() {
     wp_enqueue_style( 'wetuts-style', plugins_url( 'assets/css/style.css', __FILE__ ) );
 }
 
 add_action( 'wp_enqueue_scripts', 'wetuts_enqueue_scripts' );
+
+function wetuts_page_content_top( $a, $b ) {
+    echo '<h1>I am at top</h1>';
+
+    var_dump($a, $b);
+}
+
+add_action( 'wetuts_page_content_top', 'wetuts_page_content_top', 10, 2 );
+
+function wetuts_page_content_bottom( $a, $b ) {
+    echo '<h1>I am at bottom</h1>';
+
+    var_dump($a, $b);
+}
+
+add_action( 'wetuts_page_content_bottom', 'wetuts_page_content_bottom', 10, 2 );
+
+function wetuts_my_welcome_message( $message, $a, $b ) {
+
+    return 'Hello Sunshine, welcome back!' . $a . $b;
+}
+
+add_filter( 'wetuts_welcome_message', 'wetuts_my_welcome_message', 10, 3 );
